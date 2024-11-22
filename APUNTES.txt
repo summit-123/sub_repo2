@@ -1,0 +1,13 @@
+INCLUYE ESTA LINEA EN deno.json para que no intente crear symlinks/junctions en EXFAT
+	"nodeModulesDir": false		
+
+LANZA EL PROGRAMA DE ESTA MANERA:
+	deno task start
+
+INCLUYE EL PAQUETE NPM DE denoKV, en el deno.json :
+	"kv": "npm:@deno/kv"
+
+	ya luego lo puedes importar :
+		import { openKv } from "kv";
+	y usar :
+		const kv = await openKv();

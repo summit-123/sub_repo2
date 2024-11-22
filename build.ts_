@@ -1,0 +1,19 @@
+import { build } from "$fresh/build.ts";
+import { load } from "https://deno.land/std/dotenv/mod.ts";
+
+const env = await load();
+const DJANGO_API_URL = env.DJANGO_API_URL || "http://localhost:8000";
+
+const buildOptions = {
+  prerender: async (route) => {
+    if (route.startsWith("/decks/")) {
+      const response = await fetch(`${DJANGO_API_URL}${route}`);
+      const data = await response.json();
+      // The middleware adds _context to the response
+      const { _context, ...pageData } = data;
+      return { props: { pageData, contextualData: _context } };
+    }
+  },
+};
+
+await build(import.meta.url, "main.ts", buildOptions);
